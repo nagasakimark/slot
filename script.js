@@ -5,6 +5,13 @@ const coinTrigger = document.querySelector('.coin-trigger');
 const nextRoundButton = document.querySelector('.next-round-button');
 const roundTracker = document.querySelector('.round-tracker');
 const startButton = document.querySelector('.start-button');
+const vocabGrid = document.querySelector('.vocab-grid');
+const vocabNextButton = document.querySelector('.vocab-next-button');
+const phraseCycleButton = document.querySelector('.phrase-cycle-button');
+const phraseStartGameButton = document.querySelector('.phrase-start-game-button');
+const phraseImage = document.querySelector('.phrase-image');
+const phraseWordEn = document.querySelector('.phrase-word-en');
+const phraseWordJa = document.querySelector('.phrase-word-ja');
 const flyingCoin = document.querySelector('.flying-coin');
 const reelStages = Array.from(document.querySelectorAll('.reel-stage'));
 const reelTracks = Array.from(document.querySelectorAll('.reel-track'));
@@ -17,16 +24,16 @@ startAudio.preload = 'auto';
 startAudio.loop = true;
 
 const vegetables = [
-    { name: 'Cabbages', src: 'vegetables/cabbages.png' },
-    { name: 'Carrots', src: 'vegetables/carrots.png' },
-    { name: 'Corn', src: 'vegetables/corn.png' },
-    { name: 'Mushrooms', src: 'vegetables/mushrooms.png' },
-    { name: 'Onions', src: 'vegetables/onions.png' },
-    { name: 'Peas', src: 'vegetables/peas.png' },
-    { name: 'Peppers', src: 'vegetables/peppers.png' },
-    { name: 'Potatoes', src: 'vegetables/potatoes.png' },
-    { name: 'Pumpkins', src: 'vegetables/pumpkins.png' },
-    { name: 'Tomatoes', src: 'vegetables/tomatoes.png' }
+    { name: 'Cabbages', japanese: 'キャベツ', src: 'vegetables/cabbages.png' },
+    { name: 'Carrots', japanese: 'にんじん', src: 'vegetables/carrots.png' },
+    { name: 'Corn', japanese: 'とうもろこし', src: 'vegetables/corn.png' },
+    { name: 'Mushrooms', japanese: 'きのこ', src: 'vegetables/mushrooms.png' },
+    { name: 'Onions', japanese: 'たまねぎ', src: 'vegetables/onions.png' },
+    { name: 'Peas', japanese: 'グリーンピース', src: 'vegetables/peas.png' },
+    { name: 'Peppers', japanese: 'ピーマン', src: 'vegetables/peppers.png' },
+    { name: 'Potatoes', japanese: 'じゃがいも', src: 'vegetables/potatoes.png' },
+    { name: 'Pumpkins', japanese: 'かぼちゃ', src: 'vegetables/pumpkins.png' },
+    { name: 'Tomatoes', japanese: 'トマト', src: 'vegetables/tomatoes.png' }
 ];
 
 const prizePairs = [
@@ -65,6 +72,9 @@ let startScreenActive = true;
 let introAnimations = [];
 let startAudioUnlocked = false;
 let prestartComplete = false;
+let introStage = 'start';
+let phraseVegetableIndex = 0;
+let startAudioFadeTimer = null;
 
 vegetables.forEach((vegetable) => {
     const preloadedImage = new Image();
@@ -79,7 +89,13 @@ prizePairs.forEach((pair) => {
 });
 
 function playStartAudio() {
+    if (startAudioFadeTimer) {
+        window.clearInterval(startAudioFadeTimer);
+        startAudioFadeTimer = null;
+    }
+
     startAudioUnlocked = true;
+    startAudio.volume = 1;
     const playPromise = startAudio.play();
 
     if (playPromise && typeof playPromise.catch === 'function') {
@@ -88,12 +104,90 @@ function playStartAudio() {
 }
 
 function stopStartAudio() {
+    if (startAudioFadeTimer) {
+        window.clearInterval(startAudioFadeTimer);
+        startAudioFadeTimer = null;
+    }
+
     startAudio.pause();
     startAudio.currentTime = 0;
+    startAudio.volume = 1;
+}
+
+function fadeOutStartAudio(durationMs = 700) {
+    if (startAudio.paused) {
+        stopStartAudio();
+        return;
+    }
+
+    if (startAudioFadeTimer) {
+        window.clearInterval(startAudioFadeTimer);
+    }
+
+    const initialVolume = startAudio.volume;
+
+    if (initialVolume <= 0) {
+        stopStartAudio();
+        return;
+    }
+
+    const stepMs = 50;
+    const steps = Math.max(1, Math.ceil(durationMs / stepMs));
+    let currentStep = 0;
+
+    startAudioFadeTimer = window.setInterval(() => {
+        currentStep += 1;
+        const nextVolume = Math.max(0, initialVolume * (1 - (currentStep / steps)));
+        startAudio.volume = nextVolume;
+
+        if (currentStep >= steps || nextVolume <= 0.01) {
+            stopStartAudio();
+        }
+    }, stepMs);
+}
+
+function setIntroStage(stage) {
+    introStage = stage;
+    machine.classList.toggle('start-screen-active', stage === 'start');
+    machine.classList.toggle('vocab-screen-active', stage === 'vocab');
+    machine.classList.toggle('phrase-screen-active', stage === 'phrase');
+    startScreenActive = stage !== 'game';
+}
+
+function populateVocabGrid() {
+    vocabGrid.innerHTML = '';
+
+    vegetables.forEach((vegetable) => {
+        const item = document.createElement('div');
+        const circle = document.createElement('div');
+        const image = document.createElement('img');
+        const label = document.createElement('div');
+
+        item.className = 'vocab-item';
+        circle.className = 'vocab-circle';
+        label.className = 'vocab-label';
+        image.src = vegetable.src;
+        image.alt = vegetable.name;
+        label.textContent = vegetable.name;
+
+        circle.appendChild(image);
+        item.appendChild(circle);
+        item.appendChild(label);
+        vocabGrid.appendChild(item);
+    });
+}
+
+function updatePhraseCard() {
+    const vegetable = vegetables[phraseVegetableIndex];
+
+    phraseImage.src = vegetable.src;
+    phraseImage.alt = vegetable.name;
+    phraseWordEn.textContent = `I like ${vegetable.name}`;
+    phraseWordJa.textContent = `${vegetable.japanese}が好きです`;
 }
 
 function ensureStartAudio() {
-    if (!startScreenActive || !prestartComplete || startAudioUnlocked) {
+    if (introStage !== 'start' || !prestartComplete || startAudioUnlocked) {
         return;
     }
 
@@ -107,6 +201,7 @@ function activateStartScreen() {
 
     prestartComplete = true;
     prestartScreen.classList.add('hidden');
+    setIntroStage('start');
     playStartAudio();
     startIntroReels();
 }
@@ -418,7 +513,7 @@ function spinReel(reelIndex, finalVegetable, durationMs) {
 }
 
 async function runSlotMachine() {
-    if (isSpinning || startScreenActive) {
+    if (isSpinning || introStage !== 'game') {
         return;
     }
 
@@ -453,6 +548,9 @@ renderReelTrack(reelTracks[1], [currentReelResults[1]]);
 refillPrizePairs();
 refillVegetablePairs();
 prepareRound();
+populateVocabGrid();
+updatePhraseCard();
+setIntroStage('start');
 
 window.addEventListener('pointerdown', ensureStartAudio, { once: true });
 window.addEventListener('keydown', ensureStartAudio, { once: true });
@@ -464,16 +562,35 @@ resultButtons.forEach((button) => {
 nextRoundButton.addEventListener('click', prepareRound);
 prestartButton.addEventListener('click', activateStartScreen);
 startButton.addEventListener('click', async () => {
-    if (!startScreenActive || !prestartComplete) {
+    if (introStage !== 'start' || !prestartComplete) {
         return;
     }
 
-    playStartAudio();
-    startScreenActive = false;
-    machine.classList.remove('start-screen-active');
+    fadeOutStartAudio();
     stopIntroReels();
+    setIntroStage('vocab');
+});
+
+vocabNextButton.addEventListener('click', () => {
+    if (introStage !== 'vocab') {
+        return;
+    }
+
+    setIntroStage('phrase');
+});
+
+phraseCycleButton.addEventListener('click', () => {
+    phraseVegetableIndex = (phraseVegetableIndex + 1) % vegetables.length;
+    updatePhraseCard();
+});
+
+phraseStartGameButton.addEventListener('click', async () => {
+    if (introStage !== 'phrase') {
+        return;
+    }
+
+    setIntroStage('game');
     renderReelTrack(reelTracks[0], [currentReelResults[0]]);
     renderReelTrack(reelTracks[1], [currentReelResults[1]]);
-    window.setTimeout(stopStartAudio, 1200);
     await runSlotMachine();
 });

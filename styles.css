@@ -7,6 +7,8 @@
 :root {
     --bg: #f389f6;
     --focus: rgba(255, 255, 255, 0.38);
+    --lesson-font: "Trebuchet MS", "Verdana", Arial, sans-serif;
+    --lesson-ja-font: "Yu Gothic", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
 }
 
 html,
@@ -99,13 +101,36 @@ button {
 .machine.start-screen-active .machine-title,
 .machine.start-screen-active .next-round-button,
 .machine.start-screen-active .result-button,
-.machine.start-screen-active .coin-trigger {
+.machine.start-screen-active .coin-trigger,
+.machine.vocab-screen-active .round-tracker,
+.machine.vocab-screen-active .toad-title,
+.machine.vocab-screen-active .machine-title,
+.machine.vocab-screen-active .next-round-button,
+.machine.vocab-screen-active .result-button,
+.machine.vocab-screen-active .coin-trigger,
+.machine.phrase-screen-active .round-tracker,
+.machine.phrase-screen-active .toad-title,
+.machine.phrase-screen-active .machine-title,
+.machine.phrase-screen-active .next-round-button,
+.machine.phrase-screen-active .result-button,
+.machine.phrase-screen-active .coin-trigger {
     opacity: 0;
     pointer-events: none;
 }
 
-.machine.start-screen-active .reel-stage {
+.machine.start-screen-active .reel-stage,
+.machine.vocab-screen-active .reel-stage,
+.machine.phrase-screen-active .reel-stage {
     pointer-events: none;
+}
+
+.machine.vocab-screen-active .machine-art,
+.machine.vocab-screen-active .machine-front,
+.machine.vocab-screen-active .reel-stage,
+.machine.phrase-screen-active .machine-art,
+.machine.phrase-screen-active .machine-front,
+.machine.phrase-screen-active .reel-stage {
+    opacity: 0;
 }
 
 .machine-art {
@@ -133,6 +158,25 @@ button {
 .machine.start-screen-active .start-screen {
     opacity: 1;
     visibility: visible;
+}
+
+.vocab-screen,
+.phrase-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    background: var(--bg);
+    transition: opacity 220ms ease, visibility 220ms ease;
+}
+
+.machine.vocab-screen-active .vocab-screen,
+.machine.phrase-screen-active .phrase-screen {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 .start-title {
@@ -229,6 +273,177 @@ button {
 .start-button:focus-visible {
     outline: 3px solid var(--focus);
     outline-offset: 3px;
+}
+
+.lesson-title,
+.phrase-title-en,
+.phrase-title-ja,
+.phrase-word-en,
+.phrase-word-ja {
+    color: #5a246d;
+    text-shadow: none;
+}
+
+.lesson-title {
+    position: absolute;
+    top: 4.8%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--lesson-font);
+    font-weight: 900;
+    font-size: clamp(2rem, 4vw, 3.7rem);
+    letter-spacing: 0.02em;
+}
+
+.vocab-grid {
+    position: absolute;
+    left: 16%;
+    top: 16%;
+    width: 68%;
+    height: 58%;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1.2rem 1rem;
+    align-content: center;
+}
+
+.vocab-item {
+    display: grid;
+    justify-items: center;
+    gap: 0.45rem;
+}
+
+.vocab-circle {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+    border: 4px solid rgba(54, 34, 61, 0.75);
+    display: grid;
+    place-items: center;
+    box-shadow: 0 0.35rem 0 rgba(0, 0, 0, 0.12);
+}
+
+.vocab-circle img {
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.vocab-label {
+    font-family: var(--lesson-font);
+    font-weight: 700;
+    font-size: clamp(0.7rem, 1vw, 1rem);
+    color: #5a246d;
+    text-align: center;
+    line-height: 1.1;
+}
+
+.lesson-next-button {
+    color: #ffffff;
+    font-family: var(--lesson-font);
+    font-weight: 800;
+    font-size: clamp(0.9rem, 1.2vw, 1.2rem);
+    line-height: 1;
+    letter-spacing: 0.04em;
+    background: linear-gradient(180deg, #323232 0%, #111111 100%);
+    border: 3px solid #4e4e4e;
+    box-shadow: 0 0.3rem 0 rgba(0, 0, 0, 0.22);
+    padding: 0.5rem 0.95rem 0.6rem;
+}
+
+.lesson-next-button:hover {
+    filter: brightness(1.08);
+    transform: translateY(-2px);
+}
+
+.lesson-next-button:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 3px;
+}
+
+.vocab-next-button {
+    position: absolute;
+    left: 50%;
+    bottom: 10.5%;
+    transform: translateX(-50%);
+}
+
+.phrase-title-en {
+    position: absolute;
+    top: 8.5%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--lesson-font);
+    font-weight: 900;
+    font-size: clamp(2.2rem, 4.4vw, 4.2rem);
+    letter-spacing: 0.01em;
+}
+
+.phrase-title-ja {
+    position: absolute;
+    top: 18.3%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--lesson-ja-font);
+    font-weight: 700;
+    font-size: clamp(1.55rem, 2.7vw, 2.8rem);
+    letter-spacing: 0.02em;
+}
+
+.phrase-card {
+    position: absolute;
+    left: 50%;
+    top: 29%;
+    transform: translateX(-50%);
+    width: min(420px, 38vw);
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 4px solid rgba(54, 34, 61, 0.75);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 1.1rem 1rem 1.35rem;
+    box-shadow: 0 0.45rem 0 rgba(0, 0, 0, 0.12);
+}
+
+.phrase-image {
+    width: min(210px, 62%);
+    height: auto;
+    max-height: 180px;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.phrase-word-en {
+    font-family: var(--lesson-font);
+    font-weight: 800;
+    font-size: clamp(1rem, 1.5vw, 1.55rem);
+    text-align: center;
+    line-height: 1.1;
+}
+
+.phrase-word-ja {
+    font-family: var(--lesson-ja-font);
+    font-weight: 700;
+    font-size: clamp(1rem, 1.45vw, 1.45rem);
+    text-align: center;
+    line-height: 1.1;
+}
+
+.phrase-actions {
+    position: absolute;
+    left: 50%;
+    bottom: 8.5%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
 }
 
 .reel-stage,
