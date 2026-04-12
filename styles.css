@@ -1,0 +1,509 @@
+@font-face {
+    font-family: "SuperMario256";
+    src: url("SuperMario256.ttf") format("truetype");
+    font-display: swap;
+}
+
+:root {
+    --bg: #f389f6;
+    --focus: rgba(255, 255, 255, 0.38);
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    background: var(--bg);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    overflow: hidden;
+    font-family: "SuperMario256", Impact, sans-serif;
+}
+
+button {
+    font: inherit;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+.scene {
+    width: 100vw;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    background: var(--bg);
+}
+
+.prestart-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: grid;
+    place-items: center;
+    background: var(--bg);
+    transition: opacity 220ms ease, visibility 220ms ease;
+}
+
+.prestart-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.prestart-button {
+    min-width: min(240px, 34vw);
+    padding: 1rem 1.4rem 1.15rem;
+    color: #ffffff;
+    font-family: "SuperMario256", Impact, sans-serif;
+    font-size: clamp(1.3rem, 2.1vw, 2.1rem);
+    line-height: 1;
+    letter-spacing: 0.08em;
+    background: linear-gradient(180deg, #4e4e4e 0%, #181818 100%);
+    border: 4px solid #5f5f5f;
+    box-shadow: 0 0.45rem 0 rgba(0, 0, 0, 0.22);
+}
+
+.prestart-button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.06);
+}
+
+.prestart-button:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 4px;
+}
+
+.machine {
+    position: relative;
+    width: min(100vw, calc(100vh * 1306 / 733));
+    aspect-ratio: 1306 / 733;
+    border: 0;
+    outline: 0;
+    box-shadow: none;
+    overflow: visible;
+}
+
+.machine.start-screen-active .round-tracker,
+.machine.start-screen-active .toad-title,
+.machine.start-screen-active .machine-title,
+.machine.start-screen-active .next-round-button,
+.machine.start-screen-active .result-button,
+.machine.start-screen-active .coin-trigger {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.machine.start-screen-active .reel-stage {
+    pointer-events: none;
+}
+
+.machine-art {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+    border: 0;
+    outline: 0;
+}
+
+.start-screen {
+    inset: 0;
+    z-index: 9;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 220ms ease, visibility 220ms ease;
+}
+
+.machine.start-screen-active .start-screen {
+    opacity: 1;
+    visibility: visible;
+}
+
+.start-title {
+    position: absolute;
+    top: 1.4%;
+    left: 14.3%;
+    width: 69%;
+    text-align: center;
+    color: #ff5aa0;
+    text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.22);
+}
+
+.start-title span {
+    display: block;
+    font-family: "SuperMario256", Impact, sans-serif;
+    -webkit-text-stroke: 2px #2c1d32;
+    line-height: 0.9;
+}
+
+.start-title-top {
+    font-size: clamp(2.6rem, 6vw, 6rem);
+    letter-spacing: 0.05em;
+}
+
+.start-title-bottom {
+    margin-top: 0.35rem;
+    font-size: clamp(2.15rem, 5vw, 4.8rem);
+    letter-spacing: 0.03em;
+}
+
+.start-toad {
+    position: absolute;
+    left: 1.2%;
+    bottom: 2.2%;
+    width: 18.5%;
+    max-width: 230px;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.start-coin {
+    position: absolute;
+    left: 4.1%;
+    width: 5.3%;
+    max-width: 66px;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.start-coin-one {
+    top: 4.8%;
+}
+
+.start-coin-two {
+    top: 14.8%;
+    left: 7.4%;
+}
+
+.start-coin-three {
+    top: 24.2%;
+    left: 4.8%;
+}
+
+.start-coin-four {
+    top: 34.8%;
+    left: 7.2%;
+}
+
+.start-button {
+    position: absolute;
+    left: 50.1%;
+    bottom: 13.4%;
+    transform: translateX(-50%);
+    min-width: 14%;
+    padding: 0.32rem 0.85rem 0.4rem;
+    color: #ffffff;
+    font-family: "SuperMario256", Impact, sans-serif;
+    font-size: clamp(1rem, 1.4vw, 1.45rem);
+    line-height: 1;
+    letter-spacing: 0.08em;
+    background: linear-gradient(180deg, #323232 0%, #111111 100%);
+    border: 3px solid #4e4e4e;
+    box-shadow: 0 0.3rem 0 rgba(0, 0, 0, 0.22);
+    pointer-events: auto;
+}
+
+.start-button:hover {
+    filter: brightness(1.08);
+    transform: translateX(-50%) translateY(-2px);
+}
+
+.start-button:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 3px;
+}
+
+.reel-stage,
+.machine-front,
+.toad-title,
+.machine-title,
+.next-round-button,
+.round-tracker,
+.start-screen {
+    position: absolute;
+}
+
+.machine-front,
+.toad-title,
+.machine-title {
+    pointer-events: none;
+}
+
+.reel-stage {
+    z-index: 2;
+    overflow: hidden;
+    border-radius: 11% / 7%;
+    pointer-events: auto;
+}
+
+.reel-stage-left {
+    left: 24.05%;
+    top: 18.55%;
+    width: 24.15%;
+    height: 57.55%;
+}
+
+.reel-stage-right {
+    left: 52.05%;
+    top: 18.55%;
+    width: 24.15%;
+    height: 57.55%;
+}
+
+.machine-front {
+    z-index: 4;
+    left: 20.5%;
+    top: 10.1%;
+    width: 59.08%;
+    height: 82.8%;
+}
+
+.coin-trigger {
+    position: absolute;
+    z-index: 6;
+    left: 83.23%;
+    top: 36.4%;
+    width: 16.25%;
+}
+
+.coin-trigger:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 3px;
+}
+
+.coin-trigger:disabled {
+    cursor: default;
+}
+
+.coin-front {
+    display: block;
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+}
+
+.next-round-button {
+    top: 12.9%;
+    left: 88.65%;
+    width: 8.8%;
+    height: 10.2%;
+    z-index: 7;
+    clip-path: polygon(0 22%, 60% 22%, 60% 4%, 100% 50%, 60% 96%, 60% 78%, 0 78%);
+    background: linear-gradient(180deg, #aa53df 0%, #8e37d1 100%);
+    border: 4px solid #53286e;
+    box-shadow: 0 0.4rem 0 rgba(53, 24, 70, 0.28);
+    transition: opacity 180ms ease, transform 180ms ease, filter 180ms ease;
+}
+
+.next-round-button::before {
+    content: "";
+    position: absolute;
+    inset: 9%;
+    clip-path: inherit;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0));
+}
+
+.next-round-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+}
+
+.next-round-button:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 3px;
+}
+
+.next-round-button:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+.round-tracker {
+    top: 5.2%;
+    left: 3.2%;
+    z-index: 8;
+    min-width: 17%;
+    padding: 0.45rem 0.8rem 0.55rem;
+    color: #ff3c71;
+    font-family: "SuperMario256", Impact, sans-serif;
+    font-size: clamp(0.9rem, 1.55vw, 1.55rem);
+    line-height: 1;
+    letter-spacing: 0.05em;
+    -webkit-text-stroke: 1px #271b2b;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.18);
+}
+
+.toad-title {
+    z-index: 5;
+    left: 35.95%;
+    top: 2.25%;
+    width: 29.4%;
+    height: auto;
+}
+
+.machine-title {
+    z-index: 5;
+    left: 19.45%;
+    top: 81.1%;
+    width: 62.2%;
+    height: auto;
+}
+
+.reel-track {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    opacity: 1;
+    transition: opacity 220ms ease;
+    will-change: transform;
+}
+
+.reel-stage.reveal-ready .reel-track {
+    opacity: 0;
+}
+
+.machine.start-screen-active .reel-stage.reveal-ready .reel-track {
+    opacity: 1;
+}
+
+.reel-cell {
+    width: 100%;
+    min-height: 100%;
+    flex: 0 0 100%;
+    display: grid;
+    place-items: center;
+}
+
+.reel-cell img {
+    display: block;
+    width: 74%;
+    height: 74%;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+    filter: drop-shadow(0 0.35rem 0.18rem rgba(0, 0, 0, 0.22));
+}
+
+.machine.start-screen-active .reel-cell img {
+    width: 69%;
+    height: 69%;
+}
+
+.reel-stage.spinning .reel-cell img {
+    filter: blur(0.8px) drop-shadow(0 0.3rem 0.16rem rgba(0, 0, 0, 0.16));
+}
+
+.result-button {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 220ms ease;
+}
+
+.result-button.ready {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.result-button img {
+    position: absolute;
+    width: 74%;
+    height: 74%;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+    transition: opacity 320ms ease, transform 320ms ease, filter 320ms ease;
+}
+
+.result-vegetable {
+    opacity: 1;
+    transform: scale(1);
+    filter: drop-shadow(0 0.35rem 0.18rem rgba(0, 0, 0, 0.22));
+}
+
+.result-prize {
+    opacity: 0;
+    transform: scale(0.94);
+    filter: drop-shadow(0 0.4rem 0.2rem rgba(0, 0, 0, 0.18));
+}
+
+.result-button.revealed .result-vegetable {
+    opacity: 0;
+    transform: scale(0.92);
+}
+
+.result-button.revealed .result-prize {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.result-button:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: -3px;
+}
+
+.flying-coin {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 72px;
+    height: 72px;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 5;
+    transform: translate(-9999px, -9999px);
+}
+
+@keyframes pulse {
+    from {
+        filter: brightness(1) saturate(1);
+    }
+    to {
+        filter: brightness(1.18) saturate(1.16);
+    }
+}
+
+@media (max-width: 900px) {
+    .machine {
+        width: min(100vw, calc(100vh * 1306 / 733));
+    }
+
+    .flying-coin {
+        width: 58px;
+        height: 58px;
+    }
+}
+
+@media (max-width: 680px) {
+    .scene {
+        padding: 0;
+    }
+
+    .machine {
+        width: 100vw;
+    }
+}

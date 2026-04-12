@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toad's Mystery Prize Machine</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="scene">
+        <section class="prestart-screen" aria-label="Pre-start screen">
+            <button class="prestart-button" type="button" aria-label="Play">PLAY</button>
+        </section>
+        <section class="machine start-screen-active" aria-label="Toad's mystery prize machine">
+            <img class="machine-art" src="slots.png" alt="Toad's Mystery Prize Machine">
+            <div class="start-screen" aria-label="Start screen">
+                <div class="start-title">
+                    <span class="start-title-top">TOAD'S</span>
+                    <span class="start-title-bottom">PRIZE MACHINE</span>
+                </div>
+                <img class="start-toad" src="toad.gif" alt="Toad mascot">
+                <img class="start-coin start-coin-one" src="coin.gif" alt="" aria-hidden="true">
+                <img class="start-coin start-coin-two" src="coin.gif" alt="" aria-hidden="true">
+                <img class="start-coin start-coin-three" src="coin.gif" alt="" aria-hidden="true">
+                <img class="start-coin start-coin-four" src="coin.gif" alt="" aria-hidden="true">
+                <button class="start-button" type="button" aria-label="Start game">START</button>
+            </div>
+            <div class="round-tracker" aria-live="polite">ROUND 1/16</div>
+            <div class="reel-stage reel-stage-left">
+                <div class="reel-track" data-reel="left"></div>
+                <button class="result-button" data-side="left" type="button" aria-label="Reveal left prize">
+                    <img class="result-vegetable" src="vegetables/carrots.png" alt="">
+                    <img class="result-prize" src="prizes/1-1.png" alt="">
+                </button>
+            </div>
+            <div class="reel-stage reel-stage-right">
+                <div class="reel-track" data-reel="right"></div>
+                <button class="result-button" data-side="right" type="button" aria-label="Reveal right prize">
+                    <img class="result-vegetable" src="vegetables/corn.png" alt="">
+                    <img class="result-prize" src="prizes/1-2.png" alt="">
+                </button>
+            </div>
+            <img class="machine-front" src="front.png" alt="" aria-hidden="true">
+            <button class="coin-trigger" type="button" aria-label="Insert coin">
+                <img class="coin-front" src="coinfront.png" alt="" aria-hidden="true">
+            </button>
+            <img class="toad-title" src="toad.png" alt="Toad's">
+            <img class="machine-title" src="mysteryprizemachine.png" alt="Mystery Prize Machine">
+            <button class="next-round-button" type="button" aria-label="Next round"></button>
+        </section>
+    </main>
+
+    <img class="flying-coin" src="coin.gif" alt="" aria-hidden="true">
+
+    <script src="script.js"></script>
+</body>
+</html>
