@@ -398,7 +398,9 @@ function refillVegetablePairs() {
 function prepareRound() {
     const characters = ['toad2.gif', 'mario.webp', 'luigi.gif'];
     const gameCharacter = document.querySelector('.game-character');
-    gameCharacter.src = characters[Math.floor(Math.random() * characters.length)];
+    if (gameCharacter) {
+        gameCharacter.src = characters[Math.floor(Math.random() * characters.length)];
+    }
 
     if (availablePrizePairs.length === 0) {
         refillPrizePairs();
@@ -722,15 +724,15 @@ characterImages.forEach((src) => {
 window.addEventListener('pointerdown', ensureStartAudio, { once: true });
 window.addEventListener('keydown', ensureStartAudio, { once: true });
 
-coinTrigger.addEventListener('click', runSlotMachine);
+if (coinTrigger) coinTrigger.addEventListener('click', runSlotMachine);
 resultButtons.forEach((button) => {
     button.addEventListener('click', () => revealPrize(button.dataset.side));
 });
-nextRoundButton.addEventListener('click', prepareRound);
+if (nextRoundButton) nextRoundButton.addEventListener('click', prepareRound);
 document.querySelectorAll('.category-button').forEach((button) => {
     button.addEventListener('click', () => activateStartScreen(button.dataset.category));
 });
-startButton.addEventListener('click', async () => {
+if (startButton) startButton.addEventListener('click', async () => {
     if (introStage !== 'start' || !prestartComplete) {
         return;
     }
@@ -740,7 +742,7 @@ startButton.addEventListener('click', async () => {
     setIntroStage('vocab');
 });
 
-vocabNextButton.addEventListener('click', () => {
+if (vocabNextButton) vocabNextButton.addEventListener('click', () => {
     if (introStage !== 'vocab') {
         return;
     }
@@ -748,12 +750,12 @@ vocabNextButton.addEventListener('click', () => {
     setIntroStage('phrase');
 });
 
-phraseCycleButton.addEventListener('click', () => {
+if (phraseCycleButton) phraseCycleButton.addEventListener('click', () => {
     phraseVegetableIndex = (phraseVegetableIndex + 1) % vegetables.length;
     updatePhraseCard();
 });
 
-phraseStartGameButton.addEventListener('click', async () => {
+if (phraseStartGameButton) phraseStartGameButton.addEventListener('click', async () => {
     if (introStage !== 'phrase') {
         return;
     }
