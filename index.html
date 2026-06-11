@@ -8,8 +8,23 @@
 </head>
 <body>
     <main class="scene">
-        <section class="prestart-screen" aria-label="Pre-start screen">
-            <button class="prestart-button" type="button" aria-label="Play">PLAY</button>
+        <section class="prestart-screen" aria-label="Category selector">
+            <div class="category-selector">
+                <div class="category-title">CHOOSE YOUR CATEGORY</div>
+                <div class="category-grid">
+                    <button class="category-button" data-category="animals">ANIMALS</button>
+                    <button class="category-button" data-category="animals2">ANIMALS 2</button>
+                    <button class="category-button" data-category="colors">COLORS</button>
+                    <button class="category-button" data-category="days">DAYS</button>
+                    <button class="category-button" data-category="fruits">FRUITS</button>
+                    <button class="category-button" data-category="months">MONTHS</button>
+                    <button class="category-button" data-category="prefectures">PREFECTURES</button>
+                    <button class="category-button" data-category="sea-animals">SEA ANIMALS</button>
+                    <button class="category-button" data-category="seasons">SEASONS</button>
+                    <button class="category-button" data-category="sports">SPORTS</button>
+                    <button class="category-button" data-category="vegetables">VEGETABLES</button>
+                </div>
+            </div>
         </section>
         <section class="machine start-screen-active" aria-label="Toad's mystery prize machine">
             <img class="machine-art" src="slots.png" alt="Toad's Mystery Prize Machine">
@@ -63,6 +78,7 @@
             </button>
             <img class="toad-title" src="toad.png" alt="Toad's">
             <img class="machine-title" src="mysteryprizemachine.png" alt="Mystery Prize Machine">
+            <img class="game-character" src="toad2.gif" alt="" aria-hidden="true">
             <button class="next-round-button" type="button" aria-label="Next round"></button>
         </section>
     </main>

@@ -15,7 +15,7 @@ html,
 body {
     width: 100%;
     height: 100%;
-    background: var(--bg);
+    background: var(--bg) url('background.jpg') center/cover fixed no-repeat;
 }
 
 * {
@@ -25,7 +25,7 @@ body {
 body {
     margin: 0;
     min-height: 100vh;
-    background: var(--bg);
+    background: var(--bg) url('background.jpg') center/cover fixed no-repeat;
     overflow: hidden;
     font-family: "SuperMario256", Impact, sans-serif;
 }
@@ -44,7 +44,6 @@ button {
     display: grid;
     place-items: center;
     padding: 0;
-    background: var(--bg);
 }
 
 .prestart-screen {
@@ -63,25 +62,50 @@ button {
     pointer-events: none;
 }
 
-.prestart-button {
-    min-width: min(240px, 34vw);
-    padding: 1rem 1.4rem 1.15rem;
+.category-selector {
+    display: grid;
+    gap: 1.8rem;
+    text-align: center;
+    padding: 2rem;
+    max-width: 800px;
+    width: 92%;
+}
+
+.category-title {
+    color: #ff5aa0;
+    font-family: "SuperMario256", Impact, sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    letter-spacing: 0.05em;
+    -webkit-text-stroke: 2px #2c1d32;
+    text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+    line-height: 1.1;
+    margin-bottom: 0.3rem;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.category-button {
+    padding: 1.1rem 0.6rem 0.95rem;
     color: #ffffff;
     font-family: "SuperMario256", Impact, sans-serif;
-    font-size: clamp(1.3rem, 2.1vw, 2.1rem);
+    font-size: clamp(1rem, 1.6vw, 1.35rem);
     line-height: 1;
-    letter-spacing: 0.08em;
-    background: linear-gradient(180deg, #4e4e4e 0%, #181818 100%);
-    border: 4px solid #5f5f5f;
-    box-shadow: 0 0.45rem 0 rgba(0, 0, 0, 0.22);
+    letter-spacing: 0.06em;
+    background: linear-gradient(180deg, #6b3fa0 0%, #4a257a 100%);
+    border: 4px solid #8f5fd4;
+    box-shadow: 0 0.4rem 0 rgba(0, 0, 0, 0.25);
+    transition: filter 120ms ease;
 }
 
-.prestart-button:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.06);
+.category-button:hover {
+    filter: brightness(1.2);
 }
 
-.prestart-button:focus-visible {
+.category-button:focus-visible {
     outline: 3px solid var(--focus);
     outline-offset: 4px;
 }
@@ -216,6 +240,24 @@ button {
     pointer-events: none;
     user-select: none;
     -webkit-user-drag: none;
+}
+
+.game-character {
+    position: absolute;
+    z-index: 5;
+    left: 1.2%;
+    bottom: 2.2%;
+    width: 18.5%;
+    max-width: 230px;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    opacity: 0;
+    transition: opacity 220ms ease;
+}
+
+.machine:not(.start-screen-active):not(.vocab-screen-active):not(.phrase-screen-active) .game-character {
+    opacity: 1;
 }
 
 .start-coin {
@@ -357,6 +399,10 @@ button {
 .lesson-next-button:hover {
     filter: brightness(1.08);
     transform: translateY(-2px);
+}
+
+.vocab-next-button:hover {
+    transform: translateX(-50%) translateY(-2px);
 }
 
 .lesson-next-button:focus-visible {
