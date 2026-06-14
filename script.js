@@ -187,7 +187,13 @@ const prizePairs = [
     { id: 13, one: 'prizes/13-1.png', two: 'prizes/13-2.png' },
     { id: 14, one: 'prizes/14-1.png', two: 'prizes/14-2.png' },
     { id: 15, one: 'prizes/15-1.png', two: 'prizes/15-2.webp' },
-    { id: 17, one: 'prizes/17-1.webp', two: 'prizes/17-2.webp' }
+    { id: 16, one: 'prizes/16-1.avif', two: 'prizes/16-2.png' },
+    { id: 17, one: 'prizes/17-1.webp', two: 'prizes/17-2.webp' },
+    { id: 18, one: 'prizes/18-1.png', two: 'prizes/18-2.webp' },
+    { id: 19, one: 'prizes/19-1.png', two: 'prizes/19-2.png' },
+    { id: 20, one: 'prizes/20-1.png', two: 'prizes/20-2.png' },
+    { id: 21, one: 'prizes/21-1.webp', two: 'prizes/21-2.png' },
+    { id: 22, one: 'prizes/22-1.png', two: 'prizes/22-2.webp' }
 ];
 
 const allPrizeItems = prizePairs.flatMap((pair) => ([
