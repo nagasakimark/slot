@@ -6,28 +6,73 @@
     <title>Toad's Mystery Prize Machine</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="prestart-open">
+    <div class="room-vignette" aria-hidden="true"></div>
     <main class="scene">
         <section class="prestart-screen" aria-label="Category selector">
+            <img class="category-toad" src="toad.gif" alt="" aria-hidden="true">
+            <img class="category-coin category-coin-one" src="coin.gif" alt="" aria-hidden="true">
+            <img class="category-coin category-coin-two" src="coin.gif" alt="" aria-hidden="true">
+            <img class="category-coin category-coin-three" src="coin.gif" alt="" aria-hidden="true">
+            <img class="category-coin category-coin-four" src="coin.gif" alt="" aria-hidden="true">
             <div class="category-selector">
                 <div class="category-title">CHOOSE YOUR CATEGORY</div>
                 <div class="category-grid">
-                    <button class="category-button" data-category="animals">ANIMALS</button>
-                    <button class="category-button" data-category="animals2">ANIMALS 2</button>
-                    <button class="category-button" data-category="colors">COLORS</button>
-                    <button class="category-button" data-category="days">DAYS</button>
-                    <button class="category-button" data-category="fruits">FRUITS</button>
-                    <button class="category-button" data-category="months">MONTHS</button>
-                    <button class="category-button" data-category="prefectures">PREFECTURES</button>
-                    <button class="category-button" data-category="sea-animals">SEA ANIMALS</button>
-                    <button class="category-button" data-category="seasons">SEASONS</button>
-                    <button class="category-button" data-category="sports">SPORTS</button>
-                    <button class="category-button" data-category="vegetables">VEGETABLES</button>
+                    <button class="category-button" data-category="animals" type="button">
+                        <span class="category-thumb-wrap"><img class="category-thumb" alt=""></span>
+                        <span class="category-name">ANIMALS</span>
+                    </button>
+                    <button class="category-button" data-category="animals2" type="button">
+                        <span class="category-thumb-wrap"><img class="category-thumb" alt=""></span>
+                        <span class="category-name">ANIMALS 2</span>
+                    </button>
+                    <button class="category-button" data-category="colors" type="button">
+                        <span class="category-thumb-wrap"><img class="category-thumb" alt=""></span>
+                        <span class="category-name">COLORS</span>
+                    </button>
+                    <button class="category-button" data-category="days" type="button">
+                        <span class="category-thumb-wrap"><img class="category-thumb" alt=""></span>
+                        <span class="category-name">DAYS</span>
+                    </button>
+                    <button class="category-button" data-category="fruits" type="button">
+                        <span class="category-thumb-wrap"><img class="category-thumb" alt=""></span>
+                        <span class="category-name">FRUITS</span>
+                    </button>
+                    <button class="category-button" data-category="months" type="button">
+                        <span class="category-thumb-wrap"><img class="category-thumb" alt=""></span>
+                        <span class="category-name">MONTHS</span>
+                    </button>
+                    <button class="category-button" data-category="prefectures" type="button">
+                        <span class="category-thumb-wrap"><img class="category-thumb" alt=""></span>
+                        <span class="category-name">PREFECTURES</span>
+                    </button>
+                    <button class="category-button" data-category="sea-animals" type="button">
+                        <span class="category-thumb-wrap"><img class="category-thumb" alt=""></span>
+                        <span class="category-name">SEA ANIMALS</span>
+                    </button>
+                    <button class="category-button" data-category="seasons" type="button">
+                        <span class="category-thumb-wrap"><img class="category-thumb" alt=""></span>
+                        <span class="category-name">SEASONS</span>
+                    </button>
+                    <button class="category-button" data-category="sports" type="button">
+                        <span class="category-thumb-wrap"><img class="category-thumb" alt=""></span>
+                        <span class="category-name">SPORTS</span>
+                    </button>
+                    <button class="category-button" data-category="vegetables" type="button">
+                        <span class="category-thumb-wrap"><img class="category-thumb" alt=""></span>
+                        <span class="category-name">VEGETABLES</span>
+                    </button>
+                    <button class="category-button" data-category="feelings" type="button">
+                        <span class="category-thumb-wrap"><img class="category-thumb" alt=""></span>
+                        <span class="category-name">FEELINGS</span>
+                    </button>
                 </div>
             </div>
         </section>
         <section class="machine start-screen-active" aria-label="Toad's mystery prize machine">
+            <div class="machine-halo" aria-hidden="true"></div>
             <img class="machine-art" src="slots.png" alt="Toad's Mystery Prize Machine">
+            <div class="machine-marquee" aria-hidden="true"></div>
             <div class="start-screen" aria-label="Start screen">
                 <div class="start-title">
                     <span class="start-title-top">TOAD'S</span>
@@ -38,14 +83,14 @@
                 <img class="start-coin start-coin-two" src="coin.gif" alt="" aria-hidden="true">
                 <img class="start-coin start-coin-three" src="coin.gif" alt="" aria-hidden="true">
                 <img class="start-coin start-coin-four" src="coin.gif" alt="" aria-hidden="true">
-                <button class="start-button" type="button" aria-label="Start game">START</button>
+                <button class="arcade-button start-button" type="button" aria-label="Start game">START</button>
             </div>
-            <div class="vocab-screen" aria-label="Vegetable vocabulary screen">
+            <div class="vocab-screen" aria-label="Vocabulary screen">
                 <div class="vocab-grid"></div>
-                <button class="lesson-next-button vocab-next-button" type="button" aria-label="Next lesson screen">NEXT</button>
+                <button class="arcade-button lesson-next-button vocab-next-button" type="button" aria-label="Next lesson screen">NEXT</button>
             </div>
             <div class="phrase-screen" aria-label="I like practice screen">
-                <div class="phrase-title-en">I like...</div>
+                <div class="phrase-title-en">What do you like? / I like...</div>
                 <div class="phrase-title-ja">〇〇が好きです</div>
                 <div class="phrase-card">
                     <img class="phrase-image" src="vegetables/carrots.png" alt="Carrots">
@@ -53,8 +98,8 @@
                     <div class="phrase-word-ja">にんじん</div>
                 </div>
                 <div class="phrase-actions">
-                    <button class="lesson-next-button phrase-cycle-button" type="button" aria-label="Show next vegetable">NEXT VEG</button>
-                    <button class="lesson-next-button phrase-start-game-button" type="button" aria-label="Start game">START GAME</button>
+                    <button class="arcade-button lesson-next-button phrase-cycle-button" type="button" aria-label="Show next item">NEXT</button>
+                    <button class="arcade-button arcade-button-go lesson-next-button phrase-start-game-button" type="button" aria-label="Start game">START GAME</button>
                 </div>
             </div>
             <div class="round-tracker" aria-live="polite">ROUND 1/16</div>
@@ -63,6 +108,7 @@
                 <button class="result-button" data-side="left" type="button" aria-label="Reveal left prize">
                     <img class="result-vegetable" src="vegetables/carrots.png" alt="">
                     <img class="result-prize" src="prizes/1-1.png" alt="">
+                    <span class="tap-badge">TAP!</span>
                 </button>
             </div>
             <div class="reel-stage reel-stage-right">
@@ -70,6 +116,7 @@
                 <button class="result-button" data-side="right" type="button" aria-label="Reveal right prize">
                     <img class="result-vegetable" src="vegetables/corn.png" alt="">
                     <img class="result-prize" src="prizes/1-2.png" alt="">
+                    <span class="tap-badge">TAP!</span>
                 </button>
             </div>
             <img class="machine-front" src="front.png" alt="" aria-hidden="true">
@@ -79,10 +126,14 @@
             <img class="toad-title" src="toad.png" alt="Toad's">
             <img class="machine-title" src="mysteryprizemachine.png" alt="Mystery Prize Machine">
             <img class="game-character" src="toad2.gif" alt="" aria-hidden="true">
-            <button class="next-round-button" type="button" aria-label="Next round"></button>
+            <button class="next-round-button" type="button" aria-label="Next round" disabled>
+                <span class="next-round-arrow" aria-hidden="true"></span>
+                <span class="next-round-label">NEXT!</span>
+            </button>
         </section>
     </main>
 
+    <div class="sparkle-layer" aria-hidden="true"></div>
     <img class="flying-coin" src="coin.gif" alt="" aria-hidden="true">
 
     <script src="script.js"></script>

@@ -11,7 +11,10 @@ const phraseStartGameButton = document.querySelector('.phrase-start-game-button'
 const phraseImage = document.querySelector('.phrase-image');
 const phraseWordEn = document.querySelector('.phrase-word-en');
 const phraseWordJa = document.querySelector('.phrase-word-ja');
+const phraseCard = document.querySelector('.phrase-card');
 const flyingCoin = document.querySelector('.flying-coin');
+const sparkleLayer = document.querySelector('.sparkle-layer');
+const gameCharacter = document.querySelector('.game-character');
 const reelStages = Array.from(document.querySelectorAll('.reel-stage'));
 const reelTracks = Array.from(document.querySelectorAll('.reel-track'));
 const resultButtons = Array.from(document.querySelectorAll('.result-button'));
@@ -166,6 +169,18 @@ const categoriesData = {
             { name: 'Pumpkins', japanese: 'かぼちゃ', src: 'vegetables/pumpkins.png' },
             { name: 'Tomatoes', japanese: 'トマト', src: 'vegetables/tomatoes.png' }
         ]
+    },
+    feelings: {
+        items: [
+            { name: 'Happy', japanese: 'うれしい', src: 'feelings/happy.png' },
+            { name: 'Sad', japanese: 'かなしい', src: 'feelings/sad.png' },
+            { name: 'Angry', japanese: 'おこっている', src: 'feelings/angry.png' },
+            { name: 'Hungry', japanese: 'おなかがすいた', src: 'feelings/hungry.png' },
+            { name: 'Sleepy', japanese: 'ねむい', src: 'feelings/sleepy.png' },
+            { name: 'Tired', japanese: 'つかれた', src: 'feelings/tired.png' },
+            { name: 'Hot', japanese: 'あつい', src: 'feelings/hot.png' },
+            { name: 'Cold', japanese: 'さむい', src: 'feelings/cold.png' }
+        ]
     }
 };
 
@@ -216,6 +231,11 @@ let prestartComplete = false;
 let introStage = 'start';
 let phraseVegetableIndex = 0;
 let startAudioFadeTimer = null;
+let currentCategoryKey = 'vegetables';
+
+function isFeelingsCategory() {
+    return currentCategoryKey === 'feelings';
+}
 
 vegetables.forEach((vegetable) => {
     const preloadedImage = new Image();
@@ -295,16 +315,38 @@ function setIntroStage(stage) {
     startScreenActive = stage !== 'game';
 }
 
+function vocabColumnCount(count) {
+    if (count <= 4) {
+        return count;
+    }
+
+    if (count % 4 === 0) {
+        return 4;
+    }
+
+    if (count % 3 === 0) {
+        return 3;
+    }
+
+    if (count % 5 === 0) {
+        return 5;
+    }
+
+    return 4;
+}
+
 function populateVocabGrid() {
     vocabGrid.innerHTML = '';
+    vocabGrid.style.gridTemplateColumns = `repeat(${vocabColumnCount(vegetables.length)}, minmax(0, 1fr))`;
 
-    vegetables.forEach((vegetable) => {
+    vegetables.forEach((vegetable, index) => {
         const item = document.createElement('div');
         const circle = document.createElement('div');
         const image = document.createElement('img');
         const label = document.createElement('div');
 
         item.className = 'vocab-item';
+        item.style.setProperty('--stagger', index);
         circle.className = 'vocab-circle';
         label.className = 'vocab-label';
         image.src = vegetable.src;
@@ -318,13 +360,97 @@ function populateVocabGrid() {
     });
 }
 
-function updatePhraseCard() {
+function updatePhraseCard(animate = false) {
     const vegetable = vegetables[phraseVegetableIndex];
+    const isFeelings = isFeelingsCategory();
 
     phraseImage.src = vegetable.src;
     phraseImage.alt = vegetable.name;
-    phraseWordEn.textContent = `I like ${vegetable.name}`;
-    phraseWordJa.textContent = `${vegetable.japanese}が好きです`;
+    if (isFeelings) {
+        phraseWordEn.textContent = `I am ${vegetable.name}`;
+        phraseWordJa.textContent = `${vegetable.japanese}です`;
+    } else {
+        phraseWordEn.textContent = `I like ${vegetable.name}`;
+        phraseWordJa.textContent = `${vegetable.japanese}が好きです`;
+    }
+
+    const titleEn = document.querySelector('.phrase-title-en');
+    const titleJa = document.querySelector('.phrase-title-ja');
+    const phraseScreen = document.querySelector('.phrase-screen');
+    if (titleEn) {
+        titleEn.textContent = isFeelings ? 'How are you? / I am...' : 'What do you like? / I like...';
+    }
+    if (titleJa) {
+        titleJa.textContent = isFeelings ? '〇〇です' : '〇〇が好きです';
+    }
+    if (phraseScreen) {
+        phraseScreen.setAttribute('aria-label', isFeelings ? 'I am practice screen' : 'I like practice screen');
+    }
+
+    if (animate && phraseCard) {
+        phraseCard.classList.remove('pop');
+        void phraseCard.offsetWidth;
+        phraseCard.classList.add('pop');
+    }
+}
+
+function decorateCategoryButtons() {
+    document.querySelectorAll('.category-button').forEach((button) => {
+        const data = categoriesData[button.dataset.category];
+        const thumb = button.querySelector('.category-thumb');
+
+        if (!data || !data.items.length || !thumb) {
+            return;
+        }
+
+        thumb.src = data.items[0].src;
+    });
+}
+
+function hopCharacter() {
+    if (!gameCharacter) {
+        return;
+    }
+
+    gameCharacter.classList.remove('hop');
+    void gameCharacter.offsetWidth;
+    gameCharacter.classList.add('hop');
+}
+
+function shakeMachine() {
+    if (!machine) {
+        return;
+    }
+
+    machine.classList.remove('shaking');
+    void machine.offsetWidth;
+    machine.classList.add('shaking');
+    window.setTimeout(() => machine.classList.remove('shaking'), 450);
+}
+
+function burstSparkles(originEl) {
+    if (!sparkleLayer || !originEl) {
+        return;
+    }
+
+    const rect = originEl.getBoundingClientRect();
+    const cx = rect.left + (rect.width / 2);
+    const cy = rect.top + (rect.height / 2);
+    const count = 10;
+
+    for (let index = 0; index < count; index += 1) {
+        const spark = document.createElement('span');
+        const angle = ((Math.PI * 2 * index) / count) + (Math.random() * 0.35);
+        const dist = 48 + (Math.random() * 78);
+
+        spark.className = index % 3 === 0 ? 'sparkle is-dot' : 'sparkle';
+        spark.style.left = `${cx}px`;
+        spark.style.top = `${cy}px`;
+        spark.style.setProperty('--dx', `${Math.cos(angle) * dist}px`);
+        spark.style.setProperty('--dy', `${Math.sin(angle) * dist}px`);
+        sparkleLayer.appendChild(spark);
+        window.setTimeout(() => spark.remove(), 800);
+    }
 }
 
 function ensureStartAudio() {
@@ -337,6 +463,10 @@ function ensureStartAudio() {
 
 function setCategory(categoryKey) {
     const data = categoriesData[categoryKey];
+    if (!data) {
+        return;
+    }
+    currentCategoryKey = categoryKey;
     vegetables = data.items;
 
     vegetables.forEach((item) => {
@@ -364,6 +494,7 @@ function activateStartScreen(categoryKey) {
     setCategory(categoryKey);
     prestartComplete = true;
     prestartScreen.classList.add('hidden');
+    document.body.classList.remove('prestart-open');
     setIntroStage('start');
     playStartAudio();
     startIntroReels();
@@ -403,9 +534,13 @@ function refillVegetablePairs() {
 
 function prepareRound() {
     const characters = ['toad2.gif', 'mario.webp', 'luigi.gif'];
-    const gameCharacter = document.querySelector('.game-character');
     if (gameCharacter) {
         gameCharacter.src = characters[Math.floor(Math.random() * characters.length)];
+        hopCharacter();
+    }
+
+    if (machine) {
+        machine.classList.remove('is-spinning', 'prizes-revealed');
     }
 
     if (availablePrizePairs.length === 0) {
@@ -458,6 +593,10 @@ function setRevealContent(side, vegetable, prizeSrc) {
 function maybeEnableNextRound() {
     if (revealedSides.left && revealedSides.right) {
         nextRoundButton.disabled = false;
+        if (machine) {
+            machine.classList.add('prizes-revealed');
+        }
+        burstSparkles(nextRoundButton);
     }
 }
 
@@ -470,6 +609,7 @@ function revealPrize(side) {
     revealedSides[side] = true;
     button.classList.add('revealed');
     button.disabled = true;
+    burstSparkles(button);
     maybeEnableNextRound();
 }
 
@@ -672,6 +812,10 @@ function spinReel(reelIndex, finalVegetable, durationMs) {
 
             animation.finished.then(() => {
                 reelStage.classList.remove('spinning');
+                reelStage.classList.remove('just-stopped');
+                void reelStage.offsetWidth;
+                reelStage.classList.add('just-stopped');
+                window.setTimeout(() => reelStage.classList.remove('just-stopped'), 400);
                 currentReelResults[reelIndex] = finalVegetable;
                 animation.cancel();
                 renderReelTrack(reelTrack, [finalVegetable]);
@@ -689,6 +833,8 @@ async function runSlotMachine() {
     isSpinning = true;
     coinTrigger.disabled = true;
     nextRoundButton.disabled = true;
+    machine.classList.add('is-spinning');
+    shakeMachine();
 
     resultButtons.forEach((button) => {
         button.classList.remove('ready', 'revealed');
@@ -709,9 +855,11 @@ async function runSlotMachine() {
         setRevealContent('right', rightVegetable, currentPrizeRound.right);
     } finally {
         isSpinning = false;
+        machine.classList.remove('is-spinning');
     }
 }
 
+decorateCategoryButtons();
 renderReelTrack(reelTracks[0], [currentReelResults[0]]);
 renderReelTrack(reelTracks[1], [currentReelResults[1]]);
 refillPrizePairs();
@@ -758,7 +906,7 @@ if (vocabNextButton) vocabNextButton.addEventListener('click', () => {
 
 if (phraseCycleButton) phraseCycleButton.addEventListener('click', () => {
     phraseVegetableIndex = (phraseVegetableIndex + 1) % vegetables.length;
-    updatePhraseCard();
+    updatePhraseCard(true);
 });
 
 if (phraseStartGameButton) phraseStartGameButton.addEventListener('click', async () => {
