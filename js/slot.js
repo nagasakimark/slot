@@ -365,6 +365,14 @@ const TitleScene = {
     Sound.unlock();
     Sound.coin(4);
     coinBurst(1134, 590, 12);
+    // a link like .../slot/#fruits starts straight on that category (once; Back still leads to the menu)
+    const deep = decodeURIComponent(location.hash.slice(1));
+    if (CATEGORY_ITEMS[deep] && !Game.deepUsed) {
+      Game.deepUsed = true;
+      Game.cat = deep;
+      Engine.go(LearnScene, null, 1134, 590);
+      return;
+    }
     Engine.go(MenuScene, null, 1134, 590);
   },
   exit() { this.leaving = false; },
